@@ -1,0 +1,8 @@
+body {
+  background: linear-gradient(
+    90deg,
+    rgb(108, 223, 252) 0%,
+    rgb(82, 148, 184) 50%
+  );
+  font-family: sans-serif;
+}
