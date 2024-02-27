@@ -4,14 +4,14 @@ import { ReposList } from './components/ReposList'
 import { useState } from 'react'
 
 const Page = styled.div`
-  width: 1500px;
+  width: 100%;
   display: flex;
   justify-content: center;
   align-items: start;
 `
 
 const Container = styled.main`
-  width: 1200px;
+  width: 90%;
   padding: 15px;
   gap: 10px;
   text-align: center;
@@ -22,7 +22,7 @@ const Container = styled.main`
 
 const Form = styled.form`
   background: #ffffff;
-  width: 700px;
+  width: 80%;
   display: flex;
   margin: 0 auto;
   padding: 35px;
@@ -42,6 +42,7 @@ const ButtonForm = styled.button`
   transition: all 0.3s ease;
   cursor: pointer;
   border-radius: 5px;
+  text-align: center;
 
   &:hover,
   &:focus,
@@ -70,7 +71,7 @@ const Buttons = styled.section`
 const Button = styled.button`
   outline: 0;
   background: #282c34;
-  width: 10%;
+  width: 25%;
   height: 50px;
   border: 0;
   padding: 15px;
@@ -121,7 +122,6 @@ export default function App() {
           <ReposList username={username} pageIndex={pageIndex} />
         )}
         <Buttons>
-          {pageIndex}
           <Button onClick={() => changePage('PREVIOUS')}>Previous</Button>
           <Button onClick={() => changePage('NEXT')}>Next</Button>
         </Buttons>
