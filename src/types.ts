@@ -78,6 +78,7 @@ export interface Repository {
   open_issues: number
   watchers: number
   default_branch: string
+  status: boolean
 }
 
 interface Owner {

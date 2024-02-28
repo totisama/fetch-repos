@@ -3,6 +3,7 @@ import { Link, useParams } from 'react-router-dom'
 import useSWR from 'swr'
 import { fetcher } from '../utils/fetcher'
 import { Repository } from '../types'
+import { ErrorButton } from '../components/ErrorButton'
 
 const Information = styled.main`
   padding: 10px;
@@ -10,20 +11,6 @@ const Information = styled.main`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-`
-
-const Back = styled.button`
-  padding: 10px;
-  background: #f2f2f2;
-  border-radius: 10px;
-  transition: all 0.3s ease;
-  border: 0;
-
-  &:hover {
-    background: #e2e2e2;
-    transform: scale(1.05);
-    cursor: pointer;
-  }
 `
 
 const SpecificInfo = styled.div`
@@ -55,6 +42,13 @@ const Error = styled.strong`
   font-size: 32px;
 `
 
+const OnError = styled.main`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`
+
 export default function RepoInformation() {
   const { username, projectName } = useParams()
   const {
@@ -67,18 +61,20 @@ export default function RepoInformation() {
   )
 
   if (isLoading) return <div>Loading...</div>
-  if (error) return <Error>Error loading repo information</Error>
+  if (error || repo === undefined || repo.status === false)
+    return (
+      <OnError>
+        <ErrorButton />
+        <Error>Error loading repo information</Error>
+      </OnError>
+    )
 
   return (
     <Page>
-      <Back>
-        <Link to="/" style={{ textDecoration: 'none', color: '#282c34' }}>
-          ⬅ Back to list
-        </Link>
-      </Back>
+      <ErrorButton />
       <Information>
-        <a href={repo?.owner.html_url} target="_blank" rel="noreferrer">
-          <Avatar src={repo?.owner.avatar_url} alt={repo?.owner.login} />
+        <a href={repo?.owner?.html_url} target="_blank" rel="noreferrer">
+          <Avatar src={repo?.owner?.avatar_url} alt={repo?.owner?.login} />
         </a>
         <h1>{repo?.name}</h1>
         <SpecificInfo>
