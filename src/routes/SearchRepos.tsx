@@ -36,7 +36,6 @@ const ButtonForm = styled.button`
   width: 20%;
   height: 50px;
   border: 0;
-  padding: 15px;
   color: #ffffff;
   font-size: 14px;
   transition: all 0.3s ease;
