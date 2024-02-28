@@ -1,6 +1,6 @@
-import './App.css'
+import './../App.css'
 import styled from 'styled-components'
-import { ReposList } from './components/ReposList'
+import { ReposList } from '../components/ReposList'
 import { useState } from 'react'
 
 const Page = styled.div`
@@ -86,7 +86,7 @@ const Button = styled.button`
   }
 `
 
-export default function App() {
+export default function SearchRepos() {
   const [username, setUsername] = useState('')
   const [pageIndex, setPageIndex] = useState(1)
 
@@ -102,6 +102,8 @@ export default function App() {
   }
 
   const changePage = (action: 'PREVIOUS' | 'NEXT') => {
+    if (username === '') return
+
     if (action === 'PREVIOUS') {
       if (pageIndex > 1) {
         setPageIndex(pageIndex - 1)

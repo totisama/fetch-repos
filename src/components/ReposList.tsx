@@ -1,5 +1,8 @@
 import styled from 'styled-components'
 import useSWR from 'swr'
+import { Link } from 'react-router-dom'
+import { fetcher } from '../utils/fetcher'
+import { Repository } from '../types'
 
 const List = styled.section`
   display: flex;
@@ -8,7 +11,7 @@ const List = styled.section`
   justify-content: center;
 `
 
-const Repo = styled.a`
+const Repo = styled.div`
   width: 100%;
   max-width: 300px;
   padding: 20px;
@@ -20,8 +23,6 @@ const Repo = styled.a`
   cursor: pointer;
   display: flex;
   flex-direction: column;
-  text-decoration: none;
-  color: #282c34;
 
   &:hover {
     transform: scale(1.05);
@@ -33,7 +34,15 @@ const Error = styled.strong`
   font-size: 32px;
 `
 
-const fetcher = (...args) => fetch(...args).then((res) => res.json())
+const Title = styled.h1`
+  font-size: 24px;
+  margin: 0;
+`
+
+const SubTitle = styled.h2`
+  font-size: 16px;
+  margin: 0;
+`
 
 export const ReposList = ({
   username = '',
@@ -42,37 +51,31 @@ export const ReposList = ({
   username: string
   pageIndex: number
 }) => {
-  const { data, isLoading } = useSWR(
-    `https://api.github.com/users/${username}/repos?per_page=5&page=${pageIndex}`,
+  const { data, isLoading, error } = useSWR<Repository[]>(
+    `https://youtube.thorsteinsson.is/api/repos?username=${username}&per_page=5&page=${pageIndex}`,
     fetcher
   )
 
   if (isLoading) return <div>Loading...</div>
-  if (data?.message) return <Error>Error loading repos</Error>
-
-  console.log(data)
+  if (error || data === undefined) return <Error>Error loading repos</Error>
 
   return (
     <List>
-      {data?.map((repo) => (
-        <Repo
-          key={repo.id}
-          href={repo.html_url}
-          target="_blank"
-          rel="noreferrer"
-        >
-          <h1>{repo.name}</h1>
-          <h2>{repo.language}</h2>
-          Created at: {new Date(repo.created_at).toLocaleDateString()}
-          {repo.description !== null && (
-            <p>
-              <strong>Description:</strong>
-              <br />
-              {repo.description}
-            </p>
-          )}
-        </Repo>
-      ))}
+      {data.length > 0 ? (
+        data?.map((repo) => (
+          <Repo key={repo.id}>
+            <Link
+              to={`/repo/${repo.full_name}`}
+              style={{ textDecoration: 'none', color: '#282c34' }}
+            >
+              <Title>{repo.name}</Title>
+              <SubTitle>{repo.language}</SubTitle>
+            </Link>
+          </Repo>
+        ))
+      ) : (
+        <Error>No more existing repos</Error>
+      )}
     </List>
   )
 }
