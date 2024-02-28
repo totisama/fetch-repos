@@ -1,7 +1,8 @@
 import './../App.css'
 import styled from 'styled-components'
 import { ReposList } from '../components/ReposList'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { useSearchParams } from 'react-router-dom'
 
 const Page = styled.div`
   width: 100%;
@@ -88,6 +89,8 @@ const Button = styled.button`
 export default function SearchRepos() {
   const [username, setUsername] = useState('')
   const [pageIndex, setPageIndex] = useState(1)
+  const [searchParams] = useSearchParams()
+  const usernameParam = searchParams.get('username') || ''
 
   const submit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -112,11 +115,22 @@ export default function SearchRepos() {
     }
   }
 
+  useEffect(() => {
+    if (usernameParam !== '') {
+      setUsername(usernameParam)
+    }
+  }, [usernameParam])
+
   return (
     <Page>
       <Container onSubmit={submit}>
         <Form>
-          <Input type="text" name="username" placeholder="username" />
+          <Input
+            type="text"
+            name="username"
+            placeholder="username"
+            defaultValue={usernameParam}
+          />
           <ButtonForm>Search repos</ButtonForm>
         </Form>
         {username !== '' && (

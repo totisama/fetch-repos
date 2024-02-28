@@ -64,14 +64,14 @@ export default function RepoInformation() {
   if (error || repo === undefined || repo.status === false)
     return (
       <OnError>
-        <ErrorButton />
+        <ErrorButton username={String(username)} />
         <Error>Error loading repo information</Error>
       </OnError>
     )
 
   return (
     <Page>
-      <ErrorButton />
+      <ErrorButton username={String(username)} />
       <Information>
         <a href={repo?.owner?.html_url} target="_blank" rel="noreferrer">
           <Avatar src={repo?.owner?.avatar_url} alt={repo?.owner?.login} />

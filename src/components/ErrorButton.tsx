@@ -15,9 +15,12 @@ const Back = styled.button`
   }
 `
 
-export const ErrorButton = () => {
+export const ErrorButton = ({ username }: { username: string }) => {
   return (
-    <Link to="/" style={{ textDecoration: 'none', color: '#282c34' }}>
+    <Link
+      to={username !== undefined ? `/?username=${username}` : '/'}
+      style={{ textDecoration: 'none', color: '#282c34' }}
+    >
       <Back>⬅ Back to list</Back>
     </Link>
   )
